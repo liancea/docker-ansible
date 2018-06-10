@@ -13,6 +13,8 @@ RUN \
 
 ENTRYPOINT [ "/usr/bin/ansible" ]
 WORKDIR "/home/ansible/data"
+USER ansible
+
 # when running: mount
 #  - ansible hosts -> /etc/ansible/hosts
 #  - ansible config -> /etc/ansible/ansible.cfg

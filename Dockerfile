@@ -9,8 +9,12 @@ RUN \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	adduser --disabled-password --gecos "" --home /home/ansible ansible && \
-	install -o ansible -g ansible -m 0755 -d /home/ansible/playbooks
+	install -o ansible -g ansible -m 0755 -d /home/ansible/data
 
 ENTRYPOINT [ "/usr/bin/ansible" ]
-WORKDIR "/home/ansible/playbooks"
-# when running: mount ansible hosts to /etc/ansible/hosts, config to /etc/ansible/ansible.cfg
+WORKDIR "/home/ansible/data"
+# when running: mount
+#  - ansible hosts -> /etc/ansible/hosts
+#  - ansible config -> /etc/ansible/ansible.cfg
+#  - ansible roles -> /etc/ansible/roles
+#  - playbooks and other stuff -> /home/ansible/data

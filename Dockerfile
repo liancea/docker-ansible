@@ -9,14 +9,15 @@ RUN \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	adduser --disabled-password --gecos "" --home /home/ansible ansible && \
-	install -o ansible -g ansible -m 0755 -d /home/ansible/data
+	install -o ansible -g ansible -m 0755 -d /home/ansible/data && \
+	install -o ansible -g ansible -m 0700 -d /home/ansible/.ssh && \
+	echo "Host *\n\tUserKnownHostsFile ~/data/.ssh_known_hosts" > /home/ansible/.ssh/config && \
+	chown ansible:ansible /home/ansible/.ssh/config
 
 ENTRYPOINT [ "/usr/bin/ansible" ]
 WORKDIR "/home/ansible/data"
 USER ansible
 
 # when running: mount
-#  - ansible hosts -> /etc/ansible/hosts
-#  - ansible config -> /etc/ansible/ansible.cfg
-#  - ansible roles -> /etc/ansible/roles
+#  - ansible configuration -> /etc/ansible
 #  - playbooks and other stuff -> /home/ansible/data

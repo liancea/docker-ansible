@@ -7,7 +7,8 @@ RUN \
 	apt-get update && \
 	apt-get -y install software-properties-common && \
 	apt-add-repository ppa:ansible/ansible && \
-	apt-get install -y ansible vim less && \
+	apt-get install -y ansible vim less netcat-openbsd iputils-ping
+		iputils-tracepath iproute2 dnsutils  && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	adduser --disabled-password --gecos "" --home /home/ansible ansible && \

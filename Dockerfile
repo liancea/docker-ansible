@@ -14,7 +14,8 @@ RUN \
 	install -o ansible -g ansible -m 0755 -d /home/ansible/data && \
 	chown root:root /usr/local/bin/entrypoint.sh && \
 	chmod 0755 /usr/local/bin/entrypoint.sh && \
-	cp -a /etc/ansible /var/ansible-distconfig
+	cp -a /etc/ansible /var/ansible-distconfig && \
+	echo "if [[ -r ~/data/.bashrc ]]; then source ~/data/.bashrc; fi" >> /home/ansible/.bashrc
 
 VOLUME [ "/home/ansible/data", "/etc/ansible" ]
 

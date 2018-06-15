@@ -1,5 +1,7 @@
 FROM ubuntu:bionic
 
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN \
 	export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
@@ -10,13 +12,15 @@ RUN \
 	rm -rf /var/lib/apt/lists/* && \
 	adduser --disabled-password --gecos "" --home /home/ansible ansible && \
 	install -o ansible -g ansible -m 0755 -d /home/ansible/data && \
-	install -o ansible -g ansible -m 0700 -d /home/ansible/.ssh && \
-	echo "Host *\n\tUserKnownHostsFile ~/data/.ssh_known_hosts" > /home/ansible/.ssh/config && \
-	chown ansible:ansible /home/ansible/.ssh/config
+	chown root:root /usr/local/bin/entrypoint.sh && \
+	chmod 0755 /usr/local/bin/entrypoint.sh && \
+	cp -a /etc/ansible /var/ansible-distconfig
 
-ENTRYPOINT [ "/usr/bin/ansible" ]
-WORKDIR "/home/ansible/data"
+VOLUME [ "/home/ansible/data", "/etc/ansible" ]
+
 USER ansible
+WORKDIR "/home/ansible/data"
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 # when running: mount
 #  - ansible configuration -> /etc/ansible
